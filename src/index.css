@@ -7,3 +7,7 @@ body {
                               rgb(229, 206, 192),
                               rgb(188, 224, 203));
 }
+
+button {
+  cursor: pointer;
+}
