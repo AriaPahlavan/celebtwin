@@ -8,7 +8,9 @@ import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 
 import 'tachyons';
 import Particles from 'react-particles-js';
+import Clarifai from 'clarifai';
 
+import keys from './apiKeys.json';
 
 const particleOptions = {
   particles: {
@@ -25,9 +27,16 @@ const particleOptions = {
   }
 };
 
+const modelId = "a403429f2ddf4b49b307e318f00e528b";
+
+const app = new Clarifai.App({
+ apiKey: keys.clarifai
+});
+
 class App extends Component {
   constructor() {
     super();
+    
     this.state = {
       intput: '',
     }
@@ -40,6 +49,15 @@ class App extends Component {
 
   onDetectClick = () => {
     console.log('click');
+    app.models.predict(modelId,
+                       "https://samples.clarifai.com/face-det.jpg")
+              .then(
+                function(response) {
+                  console.log('resp', response);
+                },
+                function(err) {
+                  console.log('err', err);
+              });
   }
 
   render() {
