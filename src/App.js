@@ -26,6 +26,22 @@ const particleOptions = {
 };
 
 class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      intput: '',
+    }
+  }
+
+  onInputChange = (event) => {
+    this.setState({ input: event.target.value});
+    console.log(this.state.input);
+  }
+
+  onDetectClick = () => {
+    console.log('click');
+  }
+
   render() {
     return (
       <div className="App">
@@ -33,7 +49,8 @@ class App extends Component {
         <Navigation />
         <Logo />
         <Rank />
-        <ImageLinkForm />
+        <ImageLinkForm onInputChange={this.onInputChange}
+                       onDetectClick={this.onDetectClick }/>
         {/* <FaceRecognition /> */}
       </div>
     );
