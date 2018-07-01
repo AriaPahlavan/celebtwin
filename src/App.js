@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import './App.css';
-
-import Navigation from './components/Navigation/Navigation';
-import Logo from './components/Logo/Logo';
-import Rank from './components/Rank/Rank';
-import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
-
 import 'tachyons';
 import Particles from 'react-particles-js';
 import Clarifai from 'clarifai';
 
+import './App.css';
+import Navigation from './components/Navigation/Navigation';
+import Logo from './components/Logo/Logo';
+import Rank from './components/Rank/Rank';
+import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
+import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import keys from './apiKeys.json';
 
 const particleOptions = {
@@ -27,8 +26,6 @@ const particleOptions = {
   }
 };
 
-const modelId = "a403429f2ddf4b49b307e318f00e528b";
-
 const app = new Clarifai.App({
  apiKey: keys.clarifai
 });
@@ -36,24 +33,25 @@ const app = new Clarifai.App({
 class App extends Component {
   constructor() {
     super();
-    
+
     this.state = {
       intput: '',
+      imageUrl: '',
     }
   }
 
   onInputChange = (event) => {
     this.setState({ input: event.target.value});
-    console.log(this.state.input);
   }
 
   onDetectClick = () => {
-    console.log('click');
-    app.models.predict(modelId,
-                       "https://samples.clarifai.com/face-det.jpg")
+    this.setState({ imageUrl: this.state.input });
+
+    app.models.predict(Clarifai.FACE_DETECT_MODEL,
+                       this.state.input)
               .then(
                 function(response) {
-                  console.log('resp', response);
+                  console.log('resp', response.outputs[0].data.regions[0].region_info.bounding_box);
                 },
                 function(err) {
                   console.log('err', err);
@@ -69,7 +67,7 @@ class App extends Component {
         <Rank />
         <ImageLinkForm onInputChange={this.onInputChange}
                        onDetectClick={this.onDetectClick }/>
-        {/* <FaceRecognition /> */}
+        <FaceRecognition imageUrl={this.state.imageUrl}/>
       </div>
     );
   }
