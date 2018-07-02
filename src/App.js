@@ -68,15 +68,16 @@ class App extends Component {
   componentDidMount() { }
 
   contentsOf(route) {
+    const {user, box, imageUrl} = this.state;
     switch(route) {
       case 'home':
         return <div>
                 <Logo />
-                <Rank />
+                <Rank name={user.name} entries={user.entries} />
                 <ImageLinkForm onInputChange={this.onInputChange}
                                onDetectClick={this.onDetectClick }/>
-                <FaceRecognition box={this.state.box}
-                                 imageUrl={this.state.imageUrl}/>
+                <FaceRecognition box={box}
+                                 imageUrl={imageUrl}/>
            </div>;
       case 'register':
         return <Register onRouteChange={this.onRouteChange}
