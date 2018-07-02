@@ -10,6 +10,7 @@ import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import SignIn from './components/SignIn/SignIn';
+import Register from './components/Register/Register';
 import keys from './apiKeys.json';
 
 const particleOptions = {
@@ -40,33 +41,49 @@ class App extends Component {
       imageUrl: '',
       box: {},
       route: 'signin',
+      isSingedIn: false,
     }
   }
 
   render() {
+    const {route, isSingedIn } = this.state;
     return (
-
       <div className="App">
-        <Particles className='below' params={particleOptions} />
-        <Navigation onRouteChange={this.onRouteChange} />
-        {this.state.route === 'signin'
-        ?
-          <SignIn onRouteChange={this.onRouteChange} />
-        :
-          <div>
-            <Logo />
-            <Rank />
-            <ImageLinkForm onInputChange={this.onInputChange}
-                           onDetectClick={this.onDetectClick }/>
-            <FaceRecognition box={this.state.box}
-                             imageUrl={this.state.imageUrl}/>
-         </div>
-        }
+        <Particles className='below'
+                   params={particleOptions} />
+        <Navigation onRouteChange={this.onRouteChange}
+                    isSingedIn={isSingedIn}/>
+        { this.contentsOf(route) }
       </div>
     );
   }
 
+  contentsOf(route) {
+    switch(route) {
+      case 'home':
+        return <div>
+                <Logo />
+                <Rank />
+                <ImageLinkForm onInputChange={this.onInputChange}
+                               onDetectClick={this.onDetectClick }/>
+                <FaceRecognition box={this.state.box}
+                                 imageUrl={this.state.imageUrl}/>
+           </div>;
+      case 'register':
+        return <Register onRouteChange={this.onRouteChange} />;
+      case 'signin':
+      default:
+        return <SignIn onRouteChange={this.onRouteChange} />;
+    }
+}
+
   onRouteChange = (route) => {
+    if (route === 'home') {
+      this.setState({ isSingedIn: true });
+    } else {
+      this.setState({ isSingedIn: false });
+    }
+
     this.setState({ route: route });
   }
 
@@ -95,6 +112,9 @@ class App extends Component {
   }
 
   onDetectClick = () => {
+    if (this.state.input === undefined)
+      return;
+
     this.setState({ imageUrl: this.state.input });
 
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
