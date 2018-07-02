@@ -65,12 +65,7 @@ class App extends Component {
     );
   }
 
-  componentDidMount() {
-    fetch('http://localhost:3000/')
-      .then(response => response.json())
-      // .then(console.log)
-      .catch(console.log);
-  }
+  componentDidMount() { }
 
   contentsOf(route) {
     switch(route) {
@@ -88,7 +83,8 @@ class App extends Component {
                          loadUser={this.loadUser}/>;
       case 'signin':
       default:
-        return <SignIn onRouteChange={this.onRouteChange} />;
+        return <SignIn onRouteChange={this.onRouteChange}
+                       loadUser={this.loadUser}/>;
     }
   }
 
