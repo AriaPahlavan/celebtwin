@@ -9,7 +9,7 @@ const formStyle = {
 const ImageLinkForm = ({onInputChange, onDetectClick}) => {
   return (
     <div>
-      <form>
+      <div>
         <p className='f3'>
           {'Try detecting faces in your images!'}
         </p>
@@ -22,7 +22,7 @@ const ImageLinkForm = ({onInputChange, onDetectClick}) => {
                   value="detect"
           />
         </div>
-      </form>
+      </div>
     </div>
   );
 };

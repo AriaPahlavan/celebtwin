@@ -111,6 +111,9 @@ class App extends Component {
   }
 
   calculateFaceLocation = (resp) => {
+    if (!resp.outputs[0].data.regions[0])
+      return Promise.reject();
+
     const clarifaiFace = resp.outputs[0].data.regions[0].region_info.bounding_box;
     const {bottom_row, left_col, right_col, top_row} = clarifaiFace;
 
@@ -134,6 +137,20 @@ class App extends Component {
     this.setState({ input: event.target.value});
   }
 
+  updateRanking = (data) => {
+    fetch('http://localhost:3000/image', {
+      method: 'put',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        id: this.state.user.id
+      })
+    })
+      .then(response => response.json())
+      .then(count => this.setState(Object
+                         .assign(this.state.user, {entries: count})));
+    return data;
+  }
+
   onDetectClick = () => {
     if (this.state.input === undefined)
       return;
@@ -142,6 +159,7 @@ class App extends Component {
 
     app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
               .then(this.calculateFaceLocation)
+              .then(this.updateRanking)
               .then(this.displayFaceBox)
               .catch(console.log);
   }
