@@ -9,6 +9,7 @@ import Logo from './components/Logo/Logo';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
+import SignIn from './components/SignIn/SignIn';
 import keys from './apiKeys.json';
 
 const particleOptions = {
@@ -38,7 +39,35 @@ class App extends Component {
       intput: '',
       imageUrl: '',
       box: {},
+      route: 'signin',
     }
+  }
+
+  render() {
+    return (
+
+      <div className="App">
+        <Particles className='below' params={particleOptions} />
+        <Navigation onRouteChange={this.onRouteChange} />
+        {this.state.route === 'signin'
+        ?
+          <SignIn onRouteChange={this.onRouteChange} />
+        :
+          <div>
+            <Logo />
+            <Rank />
+            <ImageLinkForm onInputChange={this.onInputChange}
+                           onDetectClick={this.onDetectClick }/>
+            <FaceRecognition box={this.state.box}
+                             imageUrl={this.state.imageUrl}/>
+         </div>
+        }
+      </div>
+    );
+  }
+
+  onRouteChange = (route) => {
+    this.setState({ route: route });
   }
 
   calculateFaceLocation = (resp) => {
@@ -72,21 +101,6 @@ class App extends Component {
               .then(this.calculateFaceLocation)
               .then(this.displayFaceBox)
               .catch(console.log);
-  }
-
-  render() {
-    return (
-      <div className="App">
-        <Particles className='below' params={particleOptions} />
-        <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm onInputChange={this.onInputChange}
-                       onDetectClick={this.onDetectClick }/>
-        <FaceRecognition box={this.state.box}
-                         imageUrl={this.state.imageUrl}/>
-      </div>
-    );
   }
 }
 
