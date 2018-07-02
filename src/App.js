@@ -42,6 +42,13 @@ class App extends Component {
       box: {},
       route: 'signin',
       isSingedIn: false,
+      user: {
+        id: 0,
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      },
     }
   }
 
@@ -77,11 +84,23 @@ class App extends Component {
                                  imageUrl={this.state.imageUrl}/>
            </div>;
       case 'register':
-        return <Register onRouteChange={this.onRouteChange} />;
+        return <Register onRouteChange={this.onRouteChange}
+                         loadUser={this.loadUser}/>;
       case 'signin':
       default:
         return <SignIn onRouteChange={this.onRouteChange} />;
     }
+  }
+
+  loadUser = ({id, name, email, entries, joined}) => {
+    this.setState({user: {
+        id: id,
+        name: name,
+        email: email,
+        entries: entries,
+        joined: joined
+      }
+    })
   }
 
   onRouteChange = (route) => {
