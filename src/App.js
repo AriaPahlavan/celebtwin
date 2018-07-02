@@ -46,7 +46,7 @@ class App extends Component {
   }
 
   render() {
-    const {route, isSingedIn } = this.state;
+    const { route, isSingedIn } = this.state;
     return (
       <div className="App">
         <Particles className='below'
@@ -56,6 +56,13 @@ class App extends Component {
         { this.contentsOf(route) }
       </div>
     );
+  }
+
+  componentDidMount() {
+    fetch('http://localhost:3000/')
+      .then(response => response.json())
+      // .then(console.log)
+      .catch(console.log);
   }
 
   contentsOf(route) {
@@ -75,7 +82,7 @@ class App extends Component {
       default:
         return <SignIn onRouteChange={this.onRouteChange} />;
     }
-}
+  }
 
   onRouteChange = (route) => {
     if (route === 'home') {
