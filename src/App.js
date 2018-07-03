@@ -32,24 +32,26 @@ const app = new Clarifai.App({
  apiKey: keys.clarifai
 });
 
+const initialState = {
+  intput: '',
+  imageUrl: '',
+  box: {},
+  route: 'signin',
+  isSingedIn: false,
+  user: {
+    id: 0,
+    name: '',
+    email: '',
+    entries: 0,
+    joined: ''
+  },
+};
+
 class App extends Component {
   constructor() {
     super();
 
-    this.state = {
-      intput: '',
-      imageUrl: '',
-      box: {},
-      route: 'signin',
-      isSingedIn: false,
-      user: {
-        id: 0,
-        name: '',
-        email: '',
-        entries: 0,
-        joined: ''
-      },
-    }
+    this.state = initialState;
   }
 
   render() {
@@ -104,7 +106,7 @@ class App extends Component {
     if (route === 'home') {
       this.setState({ isSingedIn: true });
     } else {
-      this.setState({ isSingedIn: false });
+      this.setState(initialState);
     }
 
     this.setState({ route: route });
