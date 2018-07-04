@@ -3,7 +3,6 @@ import './FaceRecognition.css';
 
 
 const FaceRecognition = ({ box, imageUrl }) => {
-  console.log(box);
   const {top, left, bot, right} = box;
 
   return (
