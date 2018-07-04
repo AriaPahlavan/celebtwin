@@ -44,7 +44,6 @@ const initialState = {
 class App extends Component {
   constructor() {
     super();
-
     this.state = initialState;
   }
 
@@ -60,8 +59,6 @@ class App extends Component {
       </div>
     );
   }
-
-  componentDidMount() { }
 
   contentsOf(route) {
     const {user, box, imageUrl} = this.state;
@@ -106,6 +103,10 @@ class App extends Component {
     this.setState({ route: route });
   }
 
+  onInputChange = (event) => {
+    this.setState({ input: event.target.value});
+  }
+
   calculateFaceLocation = (resp) => {
     if (!resp.outputs[0].data.regions[0])
       return Promise.reject();
@@ -129,10 +130,6 @@ class App extends Component {
     this.setState({ box: box });
   }
 
-  onInputChange = (event) => {
-    this.setState({ input: event.target.value});
-  }
-
   updateRanking = (data) => {
     fetch('http://localhost:3000/image', {
       method: 'put',
@@ -140,9 +137,9 @@ class App extends Component {
       body: JSON.stringify({id: this.state.user.id})
     })
       .then(response => response.json())
-      .then(count => this.setState(Object
-                         .assign(this.state.user, {entries: count})))
+      .then(count => this.setState(Object.assign(this.state.user, {entries: count})))
       .catch(console.log);
+
     return data;
   }
 
@@ -157,11 +154,11 @@ class App extends Component {
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({ imageUrl: this.state.input })
     })
-    .then(response => response.json())
-    .then(this.calculateFaceLocation)
-    .then(this.updateRanking)
-    .then(this.displayFaceBox)
-    .catch(console.log);
+      .then(response => response.json())
+      .then(this.calculateFaceLocation)
+      .then(this.updateRanking)
+      .then(this.displayFaceBox)
+      .catch(console.log);
   }
 }
 
