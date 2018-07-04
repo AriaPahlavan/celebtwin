@@ -145,16 +145,22 @@ class App extends Component {
     return data;
   }
 
+  isValidURL = (string) => {
+    const res = string.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+    return res != null;
+  };
+
   onDetectClick = () => {
-    if (this.state.input === undefined)
+    const inputUrl = this.state.input;
+    if (inputUrl === undefined || !isValidURL(inputUrl))
       return;
 
-    this.setState({ imageUrl: this.state.input });
+    this.setState({ imageUrl: inputUrl });
 
     fetch(`${host}/imageUrl`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
-      body: JSON.stringify({ imageUrl: this.state.input })
+      body: JSON.stringify({ imageUrl: inputUrl })
     })
       .then(response => response.json())
       .then(this.calculateFaceLocation)
