@@ -1,5 +1,6 @@
 import React from 'react';
 
+const host = 'https://stunning-gunnison-41668.herokuapp.com';
 
 class Register extends React.Component {
   constructor(props) {
@@ -85,7 +86,7 @@ class Register extends React.Component {
   }
 
   onSubmission = () => {
-    fetch('http://localhost:3000/register', {
+    fetch(`${host}/register`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(this.state)
