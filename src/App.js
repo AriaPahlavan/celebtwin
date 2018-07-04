@@ -152,7 +152,7 @@ class App extends Component {
 
   onDetectClick = () => {
     const inputUrl = this.state.input;
-    if (inputUrl === undefined || !isValidURL(inputUrl))
+    if (inputUrl === undefined || !this.isValidURL(inputUrl))
       return;
 
     this.setState({ imageUrl: inputUrl });
