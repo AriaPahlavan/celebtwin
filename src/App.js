@@ -110,9 +110,13 @@ class App extends Component {
   }
 
   calculateFaceLocation = (resp) => {
-    if (!resp.outputs[0].data.regions[0])
+    try {
+      if (!resp.outputs[0].data.regions[0])
+        return Promise.reject();
+    } catch (e) {
       return Promise.reject();
-
+    }
+    
     const clarifaiFace = resp.outputs[0].data.regions[0].region_info.bounding_box;
     const {bottom_row, left_col, right_col, top_row} = clarifaiFace;
 
