@@ -1,9 +1,9 @@
 import React from 'react';
 import './FaceRecognition.css';
+import BoxList from '../BoundaryBox/BoxList';
 
 
-const FaceRecognition = ({ box, imageUrl }) => {
-  const {top, left, bot, right} = box;
+const FaceRecognition = ({ boxes, imageUrl }) => {
 
   return (
     <div className='center ma'>
@@ -14,8 +14,7 @@ const FaceRecognition = ({ box, imageUrl }) => {
              width='500px'
              height='auto'
              />
-         <div className='bounding-box'
-              style={{top: top, left: left, bottom: bot, right: right}}></div>
+         <BoxList boxes={boxes}/>
       </div>
     </div>
   );

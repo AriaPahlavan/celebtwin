@@ -29,7 +29,7 @@ const particleOptions = {
 const initialState = {
   intput: '',
   imageUrl: '',
-  box: {},
+  boxex: [],
   route: 'signin',
   isSingedIn: false,
   user: {
@@ -65,7 +65,7 @@ class App extends Component {
   }
 
   contentsOf(route) {
-    const {user, box, imageUrl} = this.state;
+    const {user, boxes, imageUrl} = this.state;
     switch(route) {
       case 'home':
         return <div>
@@ -73,7 +73,7 @@ class App extends Component {
                 <Rank name={user.name} entries={user.entries} />
                 <ImageLinkForm onInputChange={this.onInputChange}
                                onDetectClick={this.onDetectClick }/>
-                <FaceRecognition box={box}
+                <FaceRecognition boxes={boxes}
                                  imageUrl={imageUrl}/>
            </div>;
       case 'register':
@@ -111,6 +111,18 @@ class App extends Component {
     this.setState({ input: event.target.value});
   }
 
+  regionInfoToBoxParams = (regionInfo, h, w) => {
+    const clarifaiFace = regionInfo.bounding_box;
+    const {bottom_row, left_col, right_col, top_row} = clarifaiFace;
+
+    return {
+      top: top_row * h,
+      left: left_col * w,
+      bot: (1-bottom_row) * h,
+      right: (1-right_col) * w
+    };
+  }
+
   calculateFaceLocation = (resp) => {
     try {
       if (!resp.outputs[0].data.regions[0])
@@ -119,23 +131,24 @@ class App extends Component {
       return Promise.reject();
     }
 
-    const clarifaiFace = resp.outputs[0].data.regions[0].region_info.bounding_box;
-    const {bottom_row, left_col, right_col, top_row} = clarifaiFace;
-
     const image = document.getElementById('inputimage');
     const w = Number(image.width);
     const h = Number(image.height);
 
-    return Promise.resolve({
-      top: top_row * h,
-      left: left_col * w,
-      bot: (1-bottom_row) * h,
-      right: (1-right_col) * w
-    });
+    const boxList = [];
+
+    for (let i = 0; i < resp.outputs[0].data.regions.length; i++) {
+      boxList.push(
+        this.regionInfoToBoxParams(
+          resp.outputs[0].data.regions[i].region_info, h, w)
+      );
+    }
+
+    return Promise.resolve(boxList);
   }
 
-  displayFaceBox = (box) => {
-    this.setState({ box: box });
+  displayFaceBox = (boxes) => {
+    this.setState({ boxes: boxes });
   }
 
   updateRanking = (data) => {
