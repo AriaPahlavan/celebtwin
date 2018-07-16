@@ -30,7 +30,8 @@ const initialState = {
   intput: '',
   imageUrl: '',
   boxex: [],
-  route: 'signin',
+  // route: 'signin',
+  route: 'home',
   isSingedIn: false,
   user: {
     id: 0,
