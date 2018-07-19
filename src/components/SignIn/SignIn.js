@@ -1,7 +1,5 @@
 import React from 'react';
 
-const host = 'https://stunning-gunnison-41668.herokuapp.com';
-
 class SignIn extends React.Component {
   constructor(props) {
     super(props);
@@ -72,7 +70,7 @@ class SignIn extends React.Component {
   }
 
   onSubmission = () => {
-    fetch(`${host}/signin`, {
+    fetch(`${this.props.host}/signin`, {
       method: 'post',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify(this.state)

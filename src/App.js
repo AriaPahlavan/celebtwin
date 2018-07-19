@@ -4,7 +4,6 @@ import 'tachyons';
 import './App.css';
 
 import Navigation from './components/Navigation/Navigation';
-import Logo from './components/Logo/Logo';
 import Rank from './components/Rank/Rank';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
@@ -42,6 +41,7 @@ const initialState = {
 };
 
 const host = 'https://stunning-gunnison-41668.herokuapp.com';
+// const host = 'http://localhost:3000';
 
 class App extends Component {
   constructor() {
@@ -69,7 +69,7 @@ class App extends Component {
     switch(route) {
       case 'home':
         return <div>
-                <Logo />
+
                 <Rank name={user.name} entries={user.entries} />
                 <ImageLinkForm onInputChange={this.onInputChange}
                                onDetectClick={this.onDetectClick }/>
@@ -78,11 +78,13 @@ class App extends Component {
            </div>;
       case 'register':
         return <Register onRouteChange={this.onRouteChange}
-                         loadUser={this.loadUser}/>;
+                         loadUser={this.loadUser}
+                         host={host}/>;
       case 'signin':
       default:
         return <SignIn onRouteChange={this.onRouteChange}
-                       loadUser={this.loadUser}/>;
+                       loadUser={this.loadUser}
+                       host={host}/>;
     }
   }
 
