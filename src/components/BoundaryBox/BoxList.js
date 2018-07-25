@@ -9,7 +9,7 @@ const BoxList = ({boxes}) => {
   }
 
   return (
-    <div>
+    <div >
       { boxes.map((box, i) => <BoundaryBox key={i} box={box}/>) }
     </div>
   );

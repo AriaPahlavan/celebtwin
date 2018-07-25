@@ -9,9 +9,9 @@ const ImageLinkForm = ({onInputChange, onDetectClick}) => {
   return (
     <div className='ph4-l'>
       <div className='mw7 center ph2'>
-        <fieldset class="cf bn ma0 pa0">
+        <fieldset className="cf bn ma0 pa0">
           <p className='f3'>
-            {'Try detecting faces in your images!'}
+            {'Find out who\'s your celebrity look-alike!'}
           </p>
           <div className='center pa4 br3  shadow-5'
                style={formStyle}>
