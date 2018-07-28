@@ -1,4 +1,4 @@
-# Face Detection and Annotation
+# Celebtwin Application
 
 ## Development Tools:
 * [Git](http://git-scm.com/)
